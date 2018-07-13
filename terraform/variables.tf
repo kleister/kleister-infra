@@ -3,7 +3,7 @@ variable "cloudflare_token" {
 }
 
 variable "cloudflare_email" {
-  type = "string"
+  type    = "string"
   default = "kleister@webhippie.de"
 }
 
