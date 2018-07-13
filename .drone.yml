@@ -1,0 +1,38 @@
+workspace:
+  base: /srv/app
+  path: src/github.com/kleister/kleister-infra
+
+branches:
+  - master
+
+pipeline:
+  terraform-check:
+    image: jmccann/drone-terraform:5
+    pull: true
+    secrets: [ aws_access_key_id, aws_secret_access_key, tf_var_cloudflare_token ]
+    root_dir: terraform/
+    actions:
+      - validate
+      - plan
+    when:
+      events: [ pull_request ]
+
+  terraform-apply:
+    image: jmccann/drone-terraform:5
+    pull: true
+    secrets: [ aws_access_key_id, aws_secret_access_key, tf_var_cloudflare_token ]
+    root_dir: terraform/
+    actions:
+      - validate
+      - apply
+    when:
+      events: [ push, tag ]
+
+  notify-matrix:
+    image: plugins/matrix:1
+    pull: true
+    secrets: [ matrix_roomid, matrix_username, matrix_password ]
+    when:
+      local: false
+      events: [ push ]
+      status: [ changed, failure ]
