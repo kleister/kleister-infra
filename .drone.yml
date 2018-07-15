@@ -24,6 +24,7 @@ pipeline:
     root_dir: terraform/
     actions:
       - validate
+      - plan
       - apply
     when:
       event: [ push, tag ]
