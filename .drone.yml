@@ -15,7 +15,7 @@ pipeline:
       - validate
       - plan
     when:
-      events: [ pull_request ]
+      event: [ pull_request ]
 
   terraform-apply:
     image: jmccann/drone-terraform:5
@@ -26,7 +26,7 @@ pipeline:
       - validate
       - apply
     when:
-      events: [ push, tag ]
+      event: [ push, tag ]
 
   notify-matrix:
     image: plugins/matrix:1
@@ -34,5 +34,5 @@ pipeline:
     secrets: [ matrix_roomid, matrix_username, matrix_password ]
     when:
       local: false
-      events: [ push ]
+      event: [ push ]
       status: [ changed, failure ]
