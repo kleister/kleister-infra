@@ -1,0 +1,25 @@
+- name: install packages
+  with_items: '{{ base_packages }}'
+  package:
+    name: '{{ item }}'
+    state: present
+  tags:
+    - base
+
+- name: check rpcbind
+  stat:
+    path: /lib/systemd/system/rpcbind.service
+  register: rpcbind
+  tags:
+    - base
+
+- name: disable rpcbind
+  when: rpcbind.stat.exists == True
+  systemd:
+    name: rpcbind
+    state: stopped
+    daemon_reload: no
+    masked: yes
+    enabled: no
+  tags:
+    - base

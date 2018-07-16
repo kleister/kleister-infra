@@ -1,0 +1,52 @@
+- name: create dirs
+  with_items:
+    - /var/lib/minio
+    - /root/.mc
+  file:
+    path: '{{ item }}'
+    state: directory
+  tags:
+    - minio
+
+- name: write default
+  notify:
+    - restart minio
+  template:
+    src: default.j2
+    dest: /etc/default/minio
+  tags:
+    - minio
+
+- name: prepare service
+  notify:
+    - restart minio
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/minio.service
+  tags:
+    - minio
+
+- name: start service
+  systemd:
+    name: minio
+    state: started
+    daemon_reload: yes
+    masked: no
+    enabled: yes
+  tags:
+    - minio
+
+- name: client download
+  get_url:
+    url: '{{ minio_client_url }}'
+    dest: /usr/local/bin/mc
+    mode: u=rwx,g=rx,o=rx
+  tags:
+    - minio
+
+- name: client config
+  template:
+    src: config.j2
+    dest: /root/.mc/config.json
+  tags:
+    - minio

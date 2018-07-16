@@ -1,0 +1,18 @@
+- hosts: servers
+  roles:
+    - base
+    - hosts
+    - gai
+    - sysctl
+    - sudo
+    - root
+    - motd
+    - firewall
+    - docker
+    - users
+    - traefik
+
+- hosts: bous
+  roles:
+    - minio
+    - downloads

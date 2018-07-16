@@ -1,0 +1,2 @@
+downloads_domain:
+downloads_webroot: /var/lib/minio/uploads

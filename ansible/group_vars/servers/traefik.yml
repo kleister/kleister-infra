@@ -1,0 +1,4 @@
+traefik_domain: kleister.tech
+traefik_email: hostmaster@kleister.tech
+traefik_users:
+  - kleister:$apr1$3ery1svk$R9T.ZiF6PojMc2Welv8hl1

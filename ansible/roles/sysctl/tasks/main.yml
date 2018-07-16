@@ -1,0 +1,10 @@
+- name: write defaults
+  with_items: '{{ sysctl_defaults }}'
+  sysctl:
+    name: '{{ item.name }}'
+    value: '{{ item.value }}'
+    state: '{{ item.state | default("present") }}'
+    sysctl_set: yes
+    reload: yes
+  tags:
+    - sysctl

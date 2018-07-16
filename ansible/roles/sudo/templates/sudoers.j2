@@ -1,0 +1,10 @@
+Defaults always_set_home
+Defaults env_reset
+Defaults mail_badpass
+Defaults secure_path = "{{ sudo_secure_path | join(":") }}"
+
+root ALL=(ALL) ALL
+%sudo ALL=(ALL) NOPASSWD: ALL
+%admin ALL=(ALL) NOPASSWD: ALL
+
+#includedir /etc/sudoers.d

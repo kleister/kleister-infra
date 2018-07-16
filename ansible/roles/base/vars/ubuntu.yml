@@ -1,0 +1,7 @@
+base_packages:
+  - apt-transport-https
+  - software-properties-common
+  - tree
+  - htop
+  - iotop
+  - sysstat
