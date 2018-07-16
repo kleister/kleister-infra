@@ -1,0 +1,14 @@
+firewall_additions: []
+firewall_defaults:
+  - rule: limit
+    port: 22022
+    proto: tcp
+  - rule: allow
+    port: 80
+    proto: tcp
+  - rule: allow
+    port: 443
+    proto: tcp
+  - rule: allow
+    port: 8000
+    proto: tcp

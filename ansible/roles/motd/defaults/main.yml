@@ -1,0 +1,5 @@
+motd_disable:
+  - 10-help-text
+  - 50-motd-news
+  - 80-livepatch
+  - 97-overlayroot

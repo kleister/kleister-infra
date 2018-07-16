@@ -1,0 +1,43 @@
+[Unit]
+Description=Minio
+
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10s
+EnvironmentFile=/etc/environment
+
+ExecStop=/bin/sh -c '/usr/bin/docker ps | /bin/grep %p 1> /dev/null && /usr/bin/docker stop %p || true'
+ExecStartPre=/bin/sh -c '/usr/bin/docker ps | /bin/grep %p 1> /dev/null && /usr/bin/docker kill %p || true'
+ExecStartPre=/bin/sh -c '/usr/bin/docker ps -a | /bin/grep %p 1> /dev/null && /usr/bin/docker rm %p || true'
+ExecStartPre=/usr/bin/docker pull webhippie/minio:latest
+ExecStart=/usr/bin/docker run --rm \
+  --name %p \
+  --hostname %p \
+  --label traefik.enable=true \
+  --label traefik.docker.network=traefik \
+  --label traefik.port=9000 \
+  --label traefik.frontend.passHostHeader=true \
+  --label traefik.frontend.rule=Host:{{ minio_domain }} \
+  --label traefik.frontend.headers.forceSTSHeader=true \
+  --label traefik.frontend.headers.STSIncludeSubdomains=false \
+  --label traefik.frontend.headers.STSPreload=true \
+  --label traefik.frontend.headers.STSSeconds=315360000 \
+  --label traefik.frontend.headers.referrerPolicy=strict-origin-when-cross-origin \
+  --label traefik.frontend.headers.customFrameOptionsValue=SAMEORIGIN \
+  --label traefik.frontend.headers.browserXSSFilter=true \
+  --label traefik.frontend.headers.contentTypeNosniff=true \
+  --env-file /etc/default/minio \
+  --network traefik \
+  --volume /etc/ssl:/etc/ssl:ro \
+  --volume /var/lib/minio:/var/lib/minio \
+  --health-cmd '/usr/bin/healthcheck' \
+  --health-interval 30s \
+  --health-retries 5 \
+  --health-timeout 10s \
+  webhippie/minio:latest
+
+[Install]
+WantedBy=multi-user.target

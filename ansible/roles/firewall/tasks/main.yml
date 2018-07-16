@@ -1,0 +1,52 @@
+- name: install packages
+  with_items:
+    - ufw
+  package:
+    name: '{{ item }}'
+    state: present
+  tags:
+    - firewall
+
+- name: reject in
+  ufw:
+    direction: incoming
+    policy: reject
+  tags:
+    - firewall
+
+- name: allow out
+  ufw:
+    direction: outgoing
+    policy: allow
+  tags:
+    - firewall
+
+- name: define defaults
+  with_items: '{{ firewall_defaults }}'
+  ufw:
+    rule: '{{ item.rule }}'
+    port: '{{ item.port }}'
+    proto: '{{ item.proto | default("tcp") }}'
+  tags:
+    - firewall
+
+- name: define additions
+  with_items: '{{ firewall_additions }}'
+  ufw:
+    rule: '{{ item.rule }}'
+    port: '{{ item.port }}'
+    proto: '{{ item.proto | default("tcp") }}'
+  tags:
+    - firewall
+
+- name: enable logging
+  ufw:
+    logging: on
+  tags:
+    - firewall
+
+- name: enable ufw
+  ufw:
+    state: enabled
+  tags:
+    - firewall

@@ -1,0 +1,7 @@
+nullmailer_me: '{{ ansible_fqdn }}'
+nullmailer_adminaddr:
+nullmailer_defaultdomain:
+nullmailer_host:
+nullmailer_port:
+nullmailer_username:
+nullmailer_password:

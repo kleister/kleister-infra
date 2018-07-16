@@ -1,0 +1,4 @@
+minio_domain:
+minio_access_key:
+minio_secret_key:
+minio_client_url: https://dl.minio.io/client/mc/release/linux-amd64/mc
