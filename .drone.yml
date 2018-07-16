@@ -9,7 +9,7 @@ pipeline:
   terraform-check:
     image: jmccann/drone-terraform:5
     pull: true
-    secrets: [ aws_access_key_id, aws_secret_access_key, tf_var_cloudflare_token, tf_var_github_token ]
+    secrets: [ aws_access_key_id, aws_secret_access_key, tf_var_hcloud_token, tf_var_cloudflare_token, tf_var_github_token ]
     root_dir: terraform/
     actions:
       - validate
@@ -20,7 +20,7 @@ pipeline:
   terraform-apply:
     image: jmccann/drone-terraform:5
     pull: true
-    secrets: [ aws_access_key_id, aws_secret_access_key, tf_var_cloudflare_token, tf_var_github_token ]
+    secrets: [ aws_access_key_id, aws_secret_access_key, tf_var_hcloud_token, tf_var_cloudflare_token, tf_var_github_token ]
     root_dir: terraform/
     actions:
       - validate
