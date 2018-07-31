@@ -17,7 +17,7 @@ resource "cloudflare_record" "www" {
 resource "cloudflare_record" "dl" {
   domain  = "${var.cloudflare_domain}"
   name    = "dl"
-  value   = "${lookup(var.server_names, 0)}.${var.cloudflare_domain}"
+  value   = "${element(var.server_names, 0)}.${var.cloudflare_domain}"
   type    = "CNAME"
   proxied = false
 }
@@ -25,7 +25,23 @@ resource "cloudflare_record" "dl" {
 resource "cloudflare_record" "minio" {
   domain  = "${var.cloudflare_domain}"
   name    = "minio"
-  value   = "${lookup(var.server_names, 0)}.${var.cloudflare_domain}"
+  value   = "${element(var.server_names, 0)}.${var.cloudflare_domain}"
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "drone" {
+  domain  = "${var.cloudflare_domain}"
+  name    = "drone"
+  value   = "${element(var.server_names, 0)}.${var.cloudflare_domain}"
+  type    = "CNAME"
+  proxied = false
+}
+
+resource "cloudflare_record" "scaler" {
+  domain  = "${var.cloudflare_domain}"
+  name    = "scaler"
+  value   = "${element(var.server_names, 0)}.${var.cloudflare_domain}"
   type    = "CNAME"
   proxied = false
 }

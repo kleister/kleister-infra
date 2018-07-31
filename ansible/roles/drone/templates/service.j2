@@ -1,0 +1,41 @@
+[Unit]
+Description=Drone
+
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10s
+EnvironmentFile=/etc/environment
+
+ExecStop=/bin/sh -c '/usr/bin/docker ps | /bin/grep %p 1> /dev/null && /usr/bin/docker stop %p || true'
+ExecStartPre=/bin/sh -c '/usr/bin/docker ps | /bin/grep %p 1> /dev/null && /usr/bin/docker kill %p || true'
+ExecStartPre=/bin/sh -c '/usr/bin/docker ps -a | /bin/grep %p 1> /dev/null && /usr/bin/docker rm %p || true'
+ExecStartPre=/usr/bin/docker pull {{ drone_image }}
+ExecStart=/usr/bin/docker run --rm \
+  --name %p \
+  --hostname %p \
+  --label traefik.enable=true \
+  --label traefik.docker.network=traefik \
+  --label traefik.port=8000 \
+  --label traefik.frontend.passHostHeader=true \
+  --label traefik.frontend.rule=Host:{{ drone_domain }} \
+  --label traefik.frontend.headers.forceSTSHeader=true \
+  --label traefik.frontend.headers.STSIncludeSubdomains=false \
+  --label traefik.frontend.headers.STSPreload=true \
+  --label traefik.frontend.headers.STSSeconds=315360000 \
+  --label traefik.frontend.headers.referrerPolicy=strict-origin-when-cross-origin \
+  --env-file /etc/default/drone \
+  --network traefik \
+  --volume /etc/ssl:/etc/ssl:ro \
+  --volume /var/lib/drone:/var/lib/drone \
+  --health-cmd 'wget --quiet --spider http://localhost:8000/healthz' \
+  --health-interval 10s \
+  --health-retries 20 \
+  --health-timeout 10s \
+  --publish 9000:9000 \
+  {{ drone_image }}
+
+[Install]
+WantedBy=multi-user.target

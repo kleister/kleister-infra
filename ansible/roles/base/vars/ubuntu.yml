@@ -5,3 +5,7 @@ base_packages:
   - htop
   - iotop
   - sysstat
+  - ipvsadm
+  - update-notifier-common
+  - socat
+  - jq

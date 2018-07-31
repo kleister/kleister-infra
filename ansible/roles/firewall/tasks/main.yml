@@ -21,6 +21,24 @@
   tags:
     - firewall
 
+- name: allow private
+  with_items: '{{ firewall_private_ips }}'
+  ufw:
+    rule: allow
+    src: '{{ item }}'
+    proto: any
+  tags:
+    - firewall
+
+- name: allow public
+  with_items: '{{ firewall_public_ips }}'
+  ufw:
+    rule: allow
+    src: '{{ item }}'
+    proto: any
+  tags:
+    - firewall
+
 - name: define defaults
   with_items: '{{ firewall_defaults }}'
   ufw:

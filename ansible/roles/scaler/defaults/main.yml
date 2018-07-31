@@ -1,0 +1,30 @@
+scaler_domain:
+scaler_root: /autoscaler
+scaler_image: drone/autoscaler:latest
+
+scaler_license:
+
+scaler_pool_min: 0
+scaler_pool_max: 1
+scaler_pool_ttl: 50m
+
+scaler_server_host: drone:8000
+scaler_server_proto: http
+scaler_server_token:
+scaler_interval: 1m
+
+scaler_agent_token:
+scaler_agent_image: drone/agent:0.8-alpine
+scaler_agent_concurrency: 3
+
+scaler_db_driver: sqlite3
+scaler_db_datasource: /var/lib/autoscaler/database.sqlite?cache=shared&mode=rwc&_busy_timeout=9999999
+
+scaler_prometheus_token:
+scaler_slack_webhook:
+
+scaler_hetzner_token:
+scaler_hetzner_datacenter: nbg1-dc3
+scaler_hetzner_image: ubuntu-18.04
+scaler_hetzner_type: cx11
+scaler_hetzner_sshkey:

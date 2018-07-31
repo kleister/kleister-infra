@@ -16,3 +16,12 @@
     state: absent
   tags:
      - motd
+
+- name: write files
+  with_items: '{{ motd_files }}'
+  template:
+    src: '{{ item.template }}'
+    dest: /etc/update-motd.d/{{ item.dest }}
+    mode: u=rwx,g=rx,o=rx
+  tags:
+     - motd
