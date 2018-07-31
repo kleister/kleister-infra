@@ -1,0 +1,31 @@
+[Unit]
+Description=MariaDB
+
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10s
+EnvironmentFile=/etc/environment
+
+ExecStop=/bin/sh -c '/usr/bin/docker ps | /bin/grep %p 1> /dev/null && /usr/bin/docker stop %p || true'
+ExecStartPre=/bin/sh -c '/usr/bin/docker ps | /bin/grep %p 1> /dev/null && /usr/bin/docker kill %p || true'
+ExecStartPre=/bin/sh -c '/usr/bin/docker ps -a | /bin/grep %p 1> /dev/null && /usr/bin/docker rm %p || true'
+ExecStartPre=/usr/bin/docker pull webhippie/mariadb:latest
+ExecStart=/usr/bin/docker run --rm \
+  --name %p \
+  --hostname %p \
+  --label traefik.enable=false \
+  --env-file /etc/default/mariadb \
+  --network traefik \
+  --volume /etc/ssl:/etc/ssl:ro \
+  --volume /var/lib/mariadb:/var/lib/mysql \
+  --health-cmd /usr/bin/healthcheck \
+  --health-interval 10s \
+  --health-retries 20 \
+  --health-timeout 10s \
+  webhippie/mariadb:latest
+
+[Install]
+WantedBy=multi-user.target

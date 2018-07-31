@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ -r "/var/lib/update-notifier/updates-available" ]; then
+  cat "/var/lib/update-notifier/updates-available"
+fi

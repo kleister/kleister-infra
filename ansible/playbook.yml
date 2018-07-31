@@ -16,3 +16,6 @@
   roles:
     - minio
     - downloads
+    - mariadb
+    - drone
+    - scaler

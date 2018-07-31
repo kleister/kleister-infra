@@ -1,0 +1,55 @@
+- name: create dirs
+  with_items:
+    - /var/lib/scaler
+    - /etc/scaler
+  file:
+    path: '{{ item }}'
+    state: directory
+  tags:
+    - scaler
+
+- name: write id_rsa
+  notify:
+    - restart scaler
+  template:
+    src: id_rsa.j2
+    dest: /etc/scaler/id_rsa
+  tags:
+    - scaler
+
+- name: write userdata
+  notify:
+    - restart scaler
+  template:
+    src: userdata.j2
+    dest: /etc/scaler/userdata.yml
+  tags:
+    - scaler
+
+- name: write default
+  notify:
+    - restart scaler
+  template:
+    src: default.j2
+    dest: /etc/default/scaler
+  tags:
+    - scaler
+
+- name: prepare service
+  notify:
+    - restart scaler
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/scaler.service
+  tags:
+    - scaler
+
+- name: start service
+  systemd:
+    name: scaler
+    state: '{% if scaler_server_token %}started{% else %}stopped{% endif %}'
+    daemon_reload: yes
+    masked: no
+    enabled: yes
+  tags:
+    - scaler

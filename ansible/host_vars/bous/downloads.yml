@@ -1,1 +1,2 @@
 downloads_domain: dl.kleister.tech
+downloads_webroot: /var/lib/minio/uploads

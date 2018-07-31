@@ -1,0 +1,36 @@
+- name: create dirs
+  with_items:
+    - /var/lib/drone
+  file:
+    path: '{{ item }}'
+    state: directory
+  tags:
+    - drone
+
+- name: write default
+  notify:
+    - restart drone
+  template:
+    src: default.j2
+    dest: /etc/default/drone
+  tags:
+    - drone
+
+- name: prepare service
+  notify:
+    - restart drone
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/drone.service
+  tags:
+    - drone
+
+- name: start service
+  systemd:
+    name: drone
+    state: started
+    daemon_reload: yes
+    masked: no
+    enabled: yes
+  tags:
+    - drone
