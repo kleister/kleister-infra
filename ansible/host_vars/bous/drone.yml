@@ -14,7 +14,7 @@ drone_admins:
   - kleisterz
   - tboerger
 drone_whitelist:
-  - kleister
+  - kleister/*
 drone_escalate:
   - plugins/docker
   - docker
