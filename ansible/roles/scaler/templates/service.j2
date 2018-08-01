@@ -20,7 +20,7 @@ ExecStart=/usr/bin/docker run --rm \
   --label traefik.docker.network=traefik \
   --label traefik.port=8080 \
   --label traefik.frontend.passHostHeader=true \
-  --label traefik.frontend.rule=Host:{{ scaler_domain }}{% if scaler_root %};PathPrefix:{{ scaler_root }}{% endif %} \
+  --label traefik.frontend.rule=Host:{{ scaler_domain }}{% if scaler_root != "/" %};PathPrefix:{{ scaler_root }}{% endif %} \
   --label traefik.frontend.headers.forceSTSHeader=true \
   --label traefik.frontend.headers.STSIncludeSubdomains=false \
   --label traefik.frontend.headers.STSPreload=true \
@@ -35,7 +35,7 @@ ExecStart=/usr/bin/docker run --rm \
   --volume /etc/scaler/id_rsa:/root/.ssh/id_rsa:ro \
   --volume /etc/scaler:/etc/scaler \
   --volume /var/lib/scaler:/var/lib/autoscaler \
-  --health-cmd 'wget --quiet --spider http://localhost:8080{% if scaler_root %}{{ scaler_root }}{% endif %}/healthz' \
+  --health-cmd 'wget --quiet --spider http://localhost:8080{% if scaler_root != "/" %}{{ scaler_root }}{% endif %}/healthz' \
   --health-interval 10s \
   --health-retries 20 \
   --health-timeout 10s \
