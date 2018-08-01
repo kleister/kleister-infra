@@ -1,6 +1,6 @@
 firewall_additions: []
 firewall_defaults:
-  - rule: limit
+  - rule: allow
     port: 22022
     proto: tcp
   - rule: allow

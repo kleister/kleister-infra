@@ -31,6 +31,9 @@ def main():
     for server in r.json()['servers']:
         server_name = server['name']
 
+        if 'agent-' in server_name:
+            continue
+
         hosts.append(server_name)
         hostvars[server_name] = fill_host_vars(server)
 
