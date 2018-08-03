@@ -21,6 +21,7 @@ scaler_agent_token: '{{ drone_secret }}'
 # scaler_db_driver: mysql
 # scaler_db_datasource: '{{ mariadb_general_username }}:{{ mariadb_general_password }}@tcp(mariadb:3306)/scaler?parseTime=true'
 
+scaler_hetzner_type: cx21
 scaler_hetzner_token: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   31383763353633663564663136633739646266373566326339326264376330343338663964623065
