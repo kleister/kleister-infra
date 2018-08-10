@@ -24,6 +24,7 @@ ExecStart=/usr/bin/docker run --rm \
   --health-interval 30s \
   --health-retries 5 \
   --health-timeout 10s \
+  --publish 9105:9105 \
   tboerger/dockerhub-exporter:latest \
   -dockerhub.org {{ dockerhub_exporter_orgs | join(',') }}
 

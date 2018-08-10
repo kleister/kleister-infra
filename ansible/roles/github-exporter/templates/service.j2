@@ -24,6 +24,7 @@ ExecStart=/usr/bin/docker run --rm \
   --health-interval 30s \
   --health-retries 5 \
   --health-timeout 10s \
+  --publish 9104:9104 \
   tboerger/github-exporter:latest \
   -github.org {{ github_exporter_orgs | join(',') }}
 
