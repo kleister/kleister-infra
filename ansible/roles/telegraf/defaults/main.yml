@@ -15,3 +15,5 @@ telegraf_omit_hostname: False
 telegraf_prometheus_listen: 0.0.0.0:9273
 telegraf_prometheus_username:
 telegraf_prometheus_password:
+
+telegraf_inputs: []
