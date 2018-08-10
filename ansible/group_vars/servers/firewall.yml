@@ -2,3 +2,9 @@ firewall_additions:
   - rule: allow
     port: 9273
     proto: tcp
+  - rule: allow
+    port: 9104
+    proto: tcp
+  - rule: allow
+    port: 9105
+    proto: tcp
