@@ -1,0 +1,4 @@
+firewall_additions:
+  - rule: allow
+    port: 9273
+    proto: tcp

@@ -25,6 +25,7 @@ ExecStart=/usr/bin/docker run --rm \
   --health-interval 10s \
   --health-retries 20 \
   --health-timeout 10s \
+  --publish 3306:3306 \
   webhippie/mariadb:latest
 
 [Install]
