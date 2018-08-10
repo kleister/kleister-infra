@@ -1,0 +1,17 @@
+telegraf_interval: 10s
+telegraf_round_interval: True
+telegraf_metric_batch_size: 1000
+telegraf_metric_buffer_limit: 10000
+telegraf_collection_jitter: 0s
+telegraf_flush_interval: 10s
+telegraf_flush_jitter: 0s
+telegraf_precision:
+telegraf_debug: False
+telegraf_quiet: False
+telegraf_logfile:
+telegraf_hostname: '{{ ansible_fqdn }}'
+telegraf_omit_hostname: False
+
+telegraf_prometheus_listen: 0.0.0.0:9273
+telegraf_prometheus_username:
+telegraf_prometheus_password:

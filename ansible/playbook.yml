@@ -7,10 +7,12 @@
     - sudo
     - root
     - motd
+    - nullmailer
     - firewall
     - docker
     - users
     - traefik
+    - telegraf
 
 - hosts: bous
   roles:
