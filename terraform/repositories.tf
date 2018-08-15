@@ -177,3 +177,27 @@ resource "github_repository" "kleister-ui" {
   allow_rebase_merge = true
   has_downloads      = false
 }
+
+resource "github_repository" "go-forge" {
+  name               = "go-forge"
+  description        = "Library for Forge"
+  homepage_url       = ""
+  has_issues         = true
+  has_wiki           = false
+  allow_merge_commit = false
+  allow_squash_merge = true
+  allow_rebase_merge = true
+  has_downloads      = false
+}
+
+resource "github_repository" "go-minecraft" {
+  name               = "go-minecraft"
+  description        = "Library for Minecraft"
+  homepage_url       = ""
+  has_issues         = true
+  has_wiki           = false
+  allow_merge_commit = false
+  allow_squash_merge = true
+  allow_rebase_merge = true
+  has_downloads      = false
+}
