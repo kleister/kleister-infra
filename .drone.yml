@@ -50,6 +50,7 @@ steps:
     root_dir: terraform/
     actions:
       - validate
+      - plan
       - apply
   when:
     event:
