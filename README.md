@@ -1,6 +1,6 @@
 # Kleister: Infra
 
-[![Build Status](http://drone.kleister.tech/api/badges/kleister/kleister-infra/status.svg)](http://drone.kleister.tech/kleister/kleister-infra)
+[![Build Status](http://cloud.drone.io/api/badges/kleister/kleister-infra/status.svg)](http://cloud.drone.io/kleister/kleister-infra)
 [![Stories in Ready](https://badge.waffle.io/kleister/kleister-api.svg?label=ready&title=Ready)](http://waffle.io/kleister/kleister-api)
 [![Join the Matrix chat at https://matrix.to/#/#kleister:matrix.org](https://img.shields.io/badge/matrix-%23kleister%3Amatrix.org-7bc9a4.svg)](https://matrix.to/#/#kleister:matrix.org)
 

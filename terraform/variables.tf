@@ -61,6 +61,9 @@ variable "bot_repos" {
     kleister-ruby     = "admin"
     kleister-scripts  = "admin"
     kleister-ui       = "admin"
+    go-forge          = "admin"
+    go-mcupdater      = "admin"
+    go-minecraft      = "admin"
   }
 }
 
@@ -91,6 +94,9 @@ variable "maintainer_repos" {
     kleister-ruby     = "push"
     kleister-scripts  = "push"
     kleister-ui       = "push"
+    go-forge          = "admin"
+    go-mcupdater      = "admin"
+    go-minecraft      = "admin"
   }
 }
 
@@ -125,12 +131,12 @@ variable "server_image" {
 
 variable "server_datacenter" {
   type    = "string"
-  default = "fsn1-dc8"
+  default = "fsn1-dc14"
 }
 
-variable "server_backup" {
+variable "server_backups" {
   type    = "string"
-  default = "02-06"
+  default = "true"
 }
 
 variable "server_keys" {

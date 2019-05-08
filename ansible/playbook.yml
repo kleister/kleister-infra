@@ -1,8 +1,14 @@
 - hosts: servers
   roles:
+    - resolved
+    - apt
+    - hetzner
     - base
+    - swap
+    - cronlist
     - hosts
     - gai
+    - mlocate
     - sysctl
     - sudo
     - root
@@ -10,6 +16,7 @@
     - nullmailer
     - firewall
     - docker
+    - ipv6nat
     - users
     - traefik
     - telegraf
@@ -20,6 +27,3 @@
     - github-exporter
     - minio
     - downloads
-    - mariadb
-    - drone
-    - scaler

@@ -1,4 +1,6 @@
-firewall_additions:
+firewall_ssh_port: 22022
+
+firewall_rules:
   - rule: allow
     port: 9273
     proto: tcp

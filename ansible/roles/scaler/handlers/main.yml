@@ -1,5 +1,0 @@
-- name: restart scaler
-  systemd:
-    name: scaler
-    state: restarted
-    daemon_reload: yes

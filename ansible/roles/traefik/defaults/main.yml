@@ -1,7 +1,0 @@
-traefik_domain:
-traefik_email:
-traefik_letsencrypt: True
-traefik_users: []
-traefik_certs: []
-traefik_backends: []
-traefik_frontends: []

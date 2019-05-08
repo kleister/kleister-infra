@@ -3,7 +3,7 @@ output "server_ipv4" {
 }
 
 output "server_ipv6" {
-  value = "${join(" ", hcloud_server.server.*.ipv6_address)}"
+  value = "${join(" ", hcloud_server.server.*.ipv6_address)}1"
 }
 
 output "server_names" {
