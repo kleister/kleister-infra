@@ -2,13 +2,13 @@ resource "hcloud_server" "server" {
   count      = "${var.server_count}"
   depends_on = ["hcloud_ssh_key.default"]
 
-  name          = "${element(var.server_names, count.index)}"
-  server_type   = "${var.server_type}"
-  image         = "${var.server_image}"
-  datacenter    = "${var.server_datacenter}"
-  backups = "${var.server_backups}"
-  user_data     = "${data.template_file.user_data.rendered}"
-  ssh_keys      = ["${var.server_keys}"]
+  name        = "${element(var.server_names, count.index)}"
+  server_type = "${var.server_type}"
+  image       = "${var.server_image}"
+  datacenter  = "${var.server_datacenter}"
+  backups     = "${var.server_backups}"
+  user_data   = "${data.template_file.user_data.rendered}"
+  ssh_keys    = ["${var.server_keys}"]
 
   lifecycle {
     ignore_changes = ["ssh_keys"]

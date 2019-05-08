@@ -8,7 +8,7 @@ resource "github_repository" "homebrew-kleister" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["homebrew", "formula"]
+  topics             = ["homebrew", "formula"]
 }
 
 resource "github_repository" "kleister-android" {
@@ -21,7 +21,7 @@ resource "github_repository" "kleister-android" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["android", "client"]
+  topics             = ["android", "client"]
 }
 
 resource "github_repository" "kleister-api" {
@@ -34,7 +34,7 @@ resource "github_repository" "kleister-api" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["api", "server", "golang"]
+  topics             = ["api", "server", "golang"]
 }
 
 resource "github_repository" "kleister-cli" {
@@ -47,7 +47,7 @@ resource "github_repository" "kleister-cli" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["cli", "golang", "client"]
+  topics             = ["cli", "golang", "client"]
 }
 
 resource "github_repository" "kleister-desktop" {
@@ -60,7 +60,7 @@ resource "github_repository" "kleister-desktop" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["desktop", "client"]
+  topics             = ["desktop", "client"]
 }
 
 resource "github_repository" "kleister-docs" {
@@ -73,7 +73,7 @@ resource "github_repository" "kleister-docs" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["documentation", "docs", "hugo"]
+  topics             = ["documentation", "docs", "hugo"]
 }
 
 resource "github_repository" "kleister-go" {
@@ -86,7 +86,7 @@ resource "github_repository" "kleister-go" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["sdk", "golang", "go", "openapi", "swagger"]
+  topics             = ["sdk", "golang", "go", "openapi", "swagger"]
 }
 
 resource "github_repository" "kleister-infra" {
@@ -99,7 +99,7 @@ resource "github_repository" "kleister-infra" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["infrastructure", "ansible", "terraform", "provsioning"]
+  topics             = ["infrastructure", "ansible", "terraform", "provsioning"]
 }
 
 resource "github_repository" "kleister-ios" {
@@ -112,7 +112,7 @@ resource "github_repository" "kleister-ios" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["ios", "apple", "client"]
+  topics             = ["ios", "apple", "client"]
 }
 
 resource "github_repository" "kleister-js" {
@@ -125,7 +125,7 @@ resource "github_repository" "kleister-js" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["sdk", "javascript", "js", "openapi", "swagger"]
+  topics             = ["sdk", "javascript", "js", "openapi", "swagger"]
 }
 
 resource "github_repository" "kleister-php" {
@@ -138,7 +138,7 @@ resource "github_repository" "kleister-php" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["sdk", "php", "openapi", "swagger"]
+  topics             = ["sdk", "php", "openapi", "swagger"]
 }
 
 resource "github_repository" "kleister-python" {
@@ -151,7 +151,7 @@ resource "github_repository" "kleister-python" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["sdk", "python", "openapi", "swagger"]
+  topics             = ["sdk", "python", "openapi", "swagger"]
 }
 
 resource "github_repository" "kleister-ruby" {
@@ -164,7 +164,7 @@ resource "github_repository" "kleister-ruby" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["sdk", "ruby", "openapi", "swagger"]
+  topics             = ["sdk", "ruby", "openapi", "swagger"]
 }
 
 resource "github_repository" "kleister-scripts" {
@@ -177,7 +177,7 @@ resource "github_repository" "kleister-scripts" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["script", "bash", "provision"]
+  topics             = ["script", "bash", "provision"]
 }
 
 resource "github_repository" "kleister-ui" {
@@ -190,7 +190,7 @@ resource "github_repository" "kleister-ui" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["ui", "nodejs"]
+  topics             = ["ui", "nodejs"]
 }
 
 resource "github_repository" "go-forge" {
@@ -203,7 +203,7 @@ resource "github_repository" "go-forge" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["forge", "golang"]
+  topics             = ["forge", "golang"]
 }
 
 resource "github_repository" "go-mcupdater" {
@@ -216,7 +216,7 @@ resource "github_repository" "go-mcupdater" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["mcupdater", "golang"]
+  topics             = ["mcupdater", "golang"]
 }
 
 resource "github_repository" "go-minecraft" {
@@ -229,5 +229,5 @@ resource "github_repository" "go-minecraft" {
   allow_squash_merge = true
   allow_rebase_merge = true
   has_downloads      = false
-  topics = ["minecraft", "golang"]
+  topics             = ["minecraft", "golang"]
 }
