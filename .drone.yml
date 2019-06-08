@@ -22,7 +22,7 @@ steps:
     TF_VAR_github_token:
       from_secret: github_token
   settings:
-    tf_version: 0.11.10
+    tf_version: 0.12.1
     root_dir: terraform/
     actions:
       - validate
@@ -46,7 +46,7 @@ steps:
     TF_VAR_github_token:
       from_secret: github_token
   settings:
-    tf_version: 0.11.10
+    tf_version: 0.12.1
     root_dir: terraform/
     actions:
       - validate

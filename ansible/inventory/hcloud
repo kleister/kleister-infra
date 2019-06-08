@@ -31,14 +31,13 @@ def main():
     for server in r.json()['servers']:
         server_name = server['name']
 
-        if 'agent-' in server_name:
-            continue
+        if 'provisioner' in server['labels'].keys() and server['labels']['provisioner'] == 'ansible':
+            hosts.append(server_name)
+            hostvars[server_name] = fill_host_vars(server)
 
-        hosts.append(server_name)
-        hostvars[server_name] = fill_host_vars(server)
-
-        add_to_type(root, server)
-        add_to_location(root, server)
+            add_to_type(root, server)
+            add_to_location(root, server)
+            add_to_labels(root, server)
 
     print json.dumps(root)
 
@@ -70,6 +69,15 @@ def add_to_location(root, server):
     if not root.has_key(l):
         root[l] = { 'hosts': [] }
     root[l]['hosts'].append(server['name'])
+
+def add_to_labels(root, server):
+    for label, value in server['labels'].items():
+        # if not root.has_key(label):
+        #     root[label] = { 'hosts': [] }
+        # root[label]['hosts'].append(server['name'])
+        if not root.has_key(value):
+            root[value] = { 'hosts': [] }
+        root[value]['hosts'].append(server['name'])
 
 if __name__ == '__main__':
     main()

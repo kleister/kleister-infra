@@ -1,20 +1,20 @@
 provider "hcloud" {
   token   = "${var.hcloud_token}"
-  version = "~> 1.2"
+  version = "~> 1.10"
 }
 
 provider "cloudflare" {
   email   = "${var.cloudflare_email}"
   token   = "${var.cloudflare_token}"
-  version = "~> 1.0"
+  version = "~> 1.15"
 }
 
 provider "github" {
   token        = "${var.github_token}"
   organization = "${var.github_org}"
-  version      = "~> 1.1"
+  version      = "~> 2.1"
 }
 
 provider "template" {
-  version = "~> 1.0"
+  version = "~> 2.1"
 }

@@ -8,7 +8,11 @@ resource "hcloud_server" "server" {
   datacenter  = "${var.server_datacenter}"
   backups     = "${var.server_backups}"
   user_data   = "${data.template_file.user_data.rendered}"
-  ssh_keys    = ["${var.server_keys}"]
+  ssh_keys    = "${var.server_keys}"
+
+  labels = {
+    provisioner = "ansible"
+  }
 
   lifecycle {
     ignore_changes = ["ssh_keys"]
