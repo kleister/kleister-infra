@@ -1,56 +1,71 @@
+locals {
+  server_keys = flatten([
+    for ssh_key in var.ssh_keys : [
+      ssh_key.name
+    ]
+  ])
+}
+
 resource "hcloud_server" "server" {
-  count      = "${var.server_count}"
-  depends_on = ["hcloud_ssh_key.default"]
+  for_each = { for row in var.server_list : row.name => row }
 
-  name        = "${element(var.server_names, count.index)}"
-  server_type = "${var.server_type}"
-  image       = "${var.server_image}"
-  datacenter  = "${var.server_datacenter}"
-  backups     = "${var.server_backups}"
-  user_data   = "${data.template_file.user_data.rendered}"
-  ssh_keys    = "${var.server_keys}"
+  name        = each.value.name
+  server_type = each.value.type
+  image       = each.value.image
+  datacenter  = each.value.dc
+  backups     = each.value.backups
+  ssh_keys    = local.server_keys
 
-  labels = {
-    provisioner = "ansible"
-  }
+  user_data = templatefile("userdata.tmpl", {
+    server_name = each.value.name
+  })
+
+  labels = merge({
+    provisioner            = "ansible"
+    prometheus_scrape_node = "9100"
+  }, each.value.metadata)
 
   lifecycle {
-    ignore_changes = ["ssh_keys"]
+    ignore_changes = [
+      ssh_keys,
+      image,
+      user_data,
+    ]
   }
 }
 
 resource "cloudflare_record" "serverv4" {
-  count = "${var.server_count}"
+  for_each = { for row in var.server_list : row.name => row }
 
-  domain  = "${var.cloudflare_domain}"
-  name    = "${element(var.server_names, count.index)}"
-  value   = "${element(hcloud_server.server.*.ipv4_address, count.index)}"
+  zone_id = cloudflare_zone.kleister.id
+  name    = each.value.name
+  value   = hcloud_server.server[each.value.name].ipv4_address
   type    = "A"
   proxied = false
 }
 
-resource "cloudflare_record" "serverv6" {
-  count = "${var.server_count}"
+resource "hcloud_rdns" "serverv4" {
+  for_each = { for row in var.server_list : row.name => row }
 
-  domain  = "${var.cloudflare_domain}"
-  name    = "${element(var.server_names, count.index)}"
-  value   = "${element(hcloud_server.server.*.ipv6_address, count.index)}1"
+  server_id  = hcloud_server.server[each.value.name].id
+  ip_address = hcloud_server.server[each.value.name].ipv4_address
+  dns_ptr    = "${each.value.name}.kleister.tech"
+}
+
+resource "cloudflare_record" "serverv6" {
+  for_each = { for row in var.server_list : row.name => row }
+
+  zone_id = cloudflare_zone.kleister.id
+  name    = each.value.name
+  value   = hcloud_server.server[each.value.name].ipv6_address
   type    = "AAAA"
   proxied = false
 }
 
-resource "hcloud_rdns" "serverv4" {
-  count = "${var.server_count}"
-
-  server_id  = "${element(hcloud_server.server.*.id, count.index)}"
-  ip_address = "${element(hcloud_server.server.*.ipv4_address, count.index)}"
-  dns_ptr    = "${element(var.server_names, count.index)}.${var.cloudflare_domain}"
-}
-
 resource "hcloud_rdns" "serverv6" {
-  count = "${var.server_count}"
+  for_each = { for row in var.server_list : row.name => row }
 
-  server_id  = "${element(hcloud_server.server.*.id, count.index)}"
-  ip_address = "${element(hcloud_server.server.*.ipv6_address, count.index)}1"
-  dns_ptr    = "${element(var.server_names, count.index)}.${var.cloudflare_domain}"
+  server_id  = hcloud_server.server[each.value.name].id
+  ip_address = hcloud_server.server[each.value.name].ipv6_address
+  dns_ptr    = "${each.value.name}.kleister.tech"
 }

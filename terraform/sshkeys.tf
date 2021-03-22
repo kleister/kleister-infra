@@ -1,6 +1,6 @@
 resource "hcloud_ssh_key" "default" {
-  count = "${length(var.ssh_keys)}"
+  for_each = { for row in var.ssh_keys : row.name => row }
 
-  name       = "${element(split(" ", element(var.ssh_keys, count.index)), 2)}"
-  public_key = "${element(split(" ", element(var.ssh_keys, count.index)), 0)} ${element(split(" ", element(var.ssh_keys, count.index)), 1)}"
+  name       = each.value.name
+  public_key = each.value.public_key
 }

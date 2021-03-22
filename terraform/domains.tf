@@ -1,13 +1,17 @@
+resource "cloudflare_zone" "kleister" {
+  zone = "kleister.tech"
+}
+
 resource "cloudflare_record" "root" {
-  domain  = "${var.cloudflare_domain}"
-  name    = "@"
+  zone_id = cloudflare_zone.kleister.id
+  name    = "kleister.tech"
   value   = "kleister-docs.netlify.com"
   type    = "CNAME"
   proxied = false
 }
 
 resource "cloudflare_record" "www" {
-  domain  = "${var.cloudflare_domain}"
+  zone_id = cloudflare_zone.kleister.id
   name    = "www"
   value   = "kleister-docs.netlify.com"
   type    = "CNAME"
@@ -15,17 +19,17 @@ resource "cloudflare_record" "www" {
 }
 
 resource "cloudflare_record" "dl" {
-  domain  = "${var.cloudflare_domain}"
+  zone_id = cloudflare_zone.kleister.id
   name    = "dl"
-  value   = "${element(var.server_names, 0)}.${var.cloudflare_domain}"
+  value   = "bous.kleister.tech"
   type    = "CNAME"
   proxied = false
 }
 
 resource "cloudflare_record" "minio" {
-  domain  = "${var.cloudflare_domain}"
+  zone_id = cloudflare_zone.kleister.id
   name    = "minio"
-  value   = "${element(var.server_names, 0)}.${var.cloudflare_domain}"
+  value   = "bous.kleister.tech"
   type    = "CNAME"
   proxied = false
 }
