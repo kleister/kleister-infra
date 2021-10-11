@@ -21,7 +21,7 @@ resource "cloudflare_record" "www" {
 resource "cloudflare_record" "dl" {
   zone_id = cloudflare_zone.kleister.id
   name    = "dl"
-  value   = "bous.kleister.tech"
+  value   = "ingress.webhippie.de"
   type    = "CNAME"
   proxied = false
 }
@@ -29,7 +29,7 @@ resource "cloudflare_record" "dl" {
 resource "cloudflare_record" "minio" {
   zone_id = cloudflare_zone.kleister.id
   name    = "minio"
-  value   = "bous.kleister.tech"
+  value   = "ingress.webhippie.de"
   type    = "CNAME"
   proxied = false
 }

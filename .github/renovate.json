@@ -1,0 +1,13 @@
+{
+    "extends": [
+        "config:base"
+    ],
+    "enabledManagers": [
+        "kustomize",
+        "terraform",
+        "terraform-version"
+    ],
+    "labels": [
+        "renovate"
+    ]
+}

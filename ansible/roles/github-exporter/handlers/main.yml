@@ -1,5 +1,0 @@
-- name: restart github-exporter
-  systemd:
-    name: github-exporter
-    state: restarted
-    daemon_reload: yes

@@ -1,5 +1,0 @@
-- name: restart dockerhub-exporter
-  systemd:
-    name: dockerhub-exporter
-    state: restarted
-    daemon_reload: yes

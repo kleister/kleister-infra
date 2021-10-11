@@ -1,6 +1,5 @@
 # Kleister: Infra
 
-[![Build Status](https://cloud.drone.io/api/badges/kleister/kleister-infra/status.svg)](https://cloud.drone.io/kleister/kleister-infra)
 [![Join the Matrix chat at https://matrix.to/#/#kleister:matrix.org](https://img.shields.io/badge/matrix-%23kleister%3Amatrix.org-7bc9a4.svg)](https://matrix.to/#/#kleister:matrix.org)
 
 **This project is under heavy development, it's not in a working state yet!**

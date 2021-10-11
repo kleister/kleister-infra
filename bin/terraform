@@ -1,19 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -eo pipefail
 
-if [ -L $0 ]
-then
-    ROOT=$(realpath -e $(dirname $(readlink -e $0))/..)/terraform
+if [ -L $0 ]; then
+    ROOT=$(cd $(dirname $(readlink -e $0))/../terraform; pwd)
 else
-    ROOT=$(realpath -e $(dirname $0)/..)/terraform
+    ROOT=$(cd $(dirname $0)/../terraform; pwd)
 fi
 
-if ! which terraform > /dev/null
-then
+if ! which terraform >/dev/null; then
     echo "Failed to detect terraform!"
     exit 1
 fi
 
-pushd ${ROOT} >/dev/null
-    terraform "$@"
-popd >/dev/null
+cd ${ROOT} && terraform "$@"
