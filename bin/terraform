@@ -1,5 +1,4 @@
 #!/bin/sh
-set -eo pipefail
 
 if [ -L $0 ]; then
     ROOT=$(cd $(dirname $(readlink -e $0))/../terraform; pwd)
