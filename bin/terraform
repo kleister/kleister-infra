@@ -12,4 +12,4 @@ if ! which terraform >/dev/null; then
     exit 1
 fi
 
-cd ${ROOT} && terraform "$@"
+terraform -chdir=${ROOT} "$@"

@@ -10,7 +10,19 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 3.12.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.11.0"
+    }
   }
 
   required_version = ">= 1.0"
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "cloudflare_zone" "kleister" {
+  zone = "kleister.eu"
 }
