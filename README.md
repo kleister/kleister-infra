@@ -1,6 +1,6 @@
 # Kleister: Infra
 
-[![General Workflow](https://github.com/kleister/kleister-infra/workflows/general.yml/badge.svg)](https://github.com/kleister/kleister-infra/actions/workflows/general.yml) [![Join the Matrix chat at https://matrix.to/#/#kleister:matrix.org](https://img.shields.io/badge/matrix-%23kleister%3Amatrix.org-7bc9a4.svg)](https://matrix.to/#/#kleister:matrix.org)
+[![General Workflow](https://github.com/kleister/kleister-infra/actions/workflows/general.yml/badge.svg)](https://github.com/kleister/kleister-infra/actions/workflows/general.yml) [![Join the Matrix chat at https://matrix.to/#/#kleister:matrix.org](https://img.shields.io/badge/matrix-%23kleister%3Amatrix.org-7bc9a4.svg)](https://matrix.to/#/#kleister:matrix.org)
 
 **This project is under heavy development, it's not in a working state yet!**
 
