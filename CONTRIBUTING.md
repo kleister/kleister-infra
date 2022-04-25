@@ -73,7 +73,7 @@ signature certifies that you wrote the patch or otherwise have the right to pass
 it on as an open-source patch. The rules are pretty simple: If you can certify
 [DCO](./DCO), then you just add a line to every git commit message:
 
-```
+```console
 Signed-off-by: Joe Smith <joe.smith@example.com>
 ```
 
