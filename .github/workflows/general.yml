@@ -11,7 +11,7 @@ name: general
 
 jobs:
   terraform:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout source
@@ -22,7 +22,7 @@ jobs:
         id: terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.1.9
+          terraform_version: ~1.3.0
 
       - name: Terraform format
         id: fmt
@@ -66,28 +66,32 @@ jobs:
           script: |
             const output = `#### Terraform Format \`${{ steps.fmt.outcome }}\`
             <details><summary>Output</summary>
-            \`\`\`\n
+
+            \`\`\`
             ${{ steps.fmt.outputs.stdout }}
             \`\`\`
             </details>
 
-            #### Terraform Iniz \`${{ steps.init.outcome }}\`
+            #### Terraform Init \`${{ steps.init.outcome }}\`
             <details><summary>Output</summary>
-            \`\`\`\n
+
+            \`\`\`
             ${{ steps.init.outputs.stdout }}
             \`\`\`
             </details>
 
             #### Terraform Validation \`${{ steps.validate.outcome }}\`
             <details><summary>Output</summary>
-            \`\`\`\n
+
+            \`\`\`
             ${{ steps.validate.outputs.stdout }}
             \`\`\`
             </details>
 
             #### Terraform Plan \`${{ steps.plan.outcome }}\`
             <details><summary>Output</summary>
-            \`\`\`\n
+
+            \`\`\`
             ${{ steps.plan.outputs.stdout }}
             \`\`\`
             </details>
@@ -106,7 +110,7 @@ jobs:
         if: steps.validate.outcome == 'failure' || steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Terraform Apply
+      - name: Terraform apply
         id: apply
         env:
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
