@@ -20,6 +20,7 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             terraform
+            shellcheck
           ];
         };
       }

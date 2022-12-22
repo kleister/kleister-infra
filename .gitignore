@@ -1,6 +1,5 @@
+.direnv
 .terraform
 
 *.retry
 *.tfvars
-
-.direnv
