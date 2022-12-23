@@ -7,7 +7,25 @@ of subdomains and S3 buckets.
 
 ## Development
 
-TBD
+### Variables
+
+```console
+export GITHUB_TOKEN=$(gopass --password kleister/github/kleisterz)
+
+export CLOUDFLARE_EMAIL=$(gopass --password kleister/cloudflare/email)
+export CLOUDFLARE_API_KEY=$(gopass --password kleister/cloudflare/apikey)
+
+export AWS_ACCESS_KEY_ID=$(gopass --password kleister/infra/access-key)
+export AWS_SECRET_ACCESS_KEY=$(gopass --password kleister/infra/secret-key)
+```
+
+### Deployment
+
+```console
+bin/terraform init
+bin/terraform plan
+bin/terraform apply
+```
 
 ## Security
 
