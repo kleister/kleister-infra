@@ -98,7 +98,7 @@ resource "aws_s3_object" "download" {
 resource "cloudflare_record" "download" {
   zone_id = cloudflare_zone.kleister.id
   name    = "dl"
-  value   = aws_s3_bucket.download.website_endpoint
+  value   = aws_s3_bucket_website_configuration.download.website_endpoint
   type    = "CNAME"
   proxied = true
 }
