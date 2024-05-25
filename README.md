@@ -11,7 +11,7 @@ of subdomains and S3 buckets.
 
 ```console
 cat << EOF >| .envrc
-use flake
+use flake . --impure
 
 export GITHUB_TOKEN=$(gopass --password kleister/github/kleisterz)
 
