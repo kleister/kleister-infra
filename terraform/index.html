@@ -1,4 +1,4 @@
-<!-- S3 Bucket Explorer Version: 1.9.2 -->
+<!-- S3 Bucket Explorer Version: 2.1.1 -->
 
 <!DOCTYPE html>
 <html lang="en" style="overflow-y: auto;">
@@ -46,89 +46,123 @@
     <script src="https://unpkg.com/moment@2.29.1/min/moment.min.js"
         integrity="sha384-Uz1UHyakAAz121kPY0Nx6ZGzYeUTy9zAtcpdwVmFCEwiTGPA2K6zSGgkKJEQfMhK"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zero-md@2.4.0/dist/zero-md.min.js" type="module"
+        integrity="sha384-U3eQ8m7c4g0jOX9H+jodGDD0wlmItWNywe2VWPxoGr3DGq89yqNhUqmPhjMMyPgJ"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
     <div id="app" v-cloak :style="cssVars">
-        <!-- Header -->
-        <div class="level">
-            <div class="level-left" style="display: flex;">
-                <figure class="level-item image is-96x96" style="margin-right: 1.5rem;">
-                    <img :src="config.logo" />
-                </figure>
-                <div>
-                    <h1 class="title">{{config.title}}</h1>
-                    <h2 class="subtitle">{{config.subtitle}}</h2>
+
+        <!-- Markdown Renderer -->
+        <zero-md v-if="pathPrefix.endsWith('::markdown')"
+            :src="urlFromPathPrefix(bucketPrefix.replace(/::markdown$/,''))">
+        </zero-md>
+
+        <!-- Main Explorer -->
+        <template v-else>
+            <!-- Header -->
+            <div class="level">
+                <div class="level-left" style="max-width: 100%;">
+                    <figure class="level-item image is-96x96" style="margin-right: 1.5rem;">
+                        <img :src="config.logo" />
+                    </figure>
+                    <div>
+                        <h1 class="title" v-html="config.titleHTML"></h1>
+                        <h2 class="subtitle" v-html="config.subtitleHTML"></h2>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
-            <!-- Navigation Bar -->
-            <div class="container is-clearfix" style="margin-bottom: 1rem;">
-                <!-- Prefix Breadcrumps -->
-                <div class="buttons is-pulled-left" style="width: 100%;">
-                    <b-button v-for="(breadcrump, index) in pathBreadcrumps" v-bind:key="breadcrump.url"
-                        type="is-primary" rounded tag="a" :href="breadcrump.url" target="" icon-pack="fa"
-                        :icon-left="index == 0 ? 'bucket': ''" :style="{ fontWeight: index == 0 ? 'bolder': ''}"
-                        style="white-space: pre;">
-                        <template v-if="index > 0">{{ breadcrump.name }}</template>
-                    </b-button>
-                    <div class="container" style="display: flex;">
-                        <!-- Prefix Search Input -->
-                        <b-field :type="!validBucketPrefix(searchPrefix) ? 'is-danger' : ''"
-                            :class="searchPrefix && pathPrefix.replace(/^.*\//,'') === searchPrefix ? 'search-prefix-matches-path-prefix' : ''"
-                            style="flex: auto;">
-                            <b-input rounded v-model="searchPrefix" placeholder="search by prefix" icon="magnify"
-                                icon-clickable @icon-click="searchByPrefix" icon-right="close-circle"
-                                icon-right-clickable @icon-right-click="searchPrefix = ''; searchByPrefix()"
-                                @keyup.enter.native="searchByPrefix">
-                            </b-input>
-                        </b-field>
+            <div class="container">
+                <!-- Navigation Bar -->
+                <div class="container is-clearfix" style="margin-bottom: 1rem;">
+                    <!-- Prefix Breadcrumps -->
+                    <div class="buttons is-pulled-left" style="width: 100%;">
+                        <b-button v-for="(breadcrump, index) in pathBreadcrumps" v-bind:key="breadcrump.url"
+                            type="is-primary" rounded tag="a" :href="breadcrump.url" target="" icon-pack="fa"
+                            :icon-left="index == 0 ? 'bucket': ''" :style="{ fontWeight: index == 0 ? 'bolder': ''}"
+                            style="white-space: pre;">
+                            <template v-if="index > 0">{{ breadcrump.name }}</template>
+                        </b-button>
+                        <div class="container" style="display: flex;">
+                            <!-- Prefix Search Input -->
+                            <b-field :type="!validBucketPrefix(searchPrefix) ? 'is-danger' : ''"
+                                :class="searchPrefix && pathPrefix.replace(/^.*\//,'') === searchPrefix ? 'search-prefix-matches-path-prefix' : ''"
+                                style="flex: auto;">
+                                <b-input rounded v-model="searchPrefix" placeholder="search by prefix" icon="magnify"
+                                    icon-clickable @icon-click="searchByPrefix"
+                                    :icon-right="searchPrefix !== '' ? 'close-circle' : ''" icon-right-clickable
+                                    @icon-right-click="searchPrefix = ''; searchByPrefix()"
+                                    @keyup.enter.native="searchByPrefix">
+                                </b-input>
+                            </b-field>
 
-                        <!-- Paginating Buttons -->
-                        <div class="container" v-show="nextContinuationToken || previousContinuationTokens.length > 0"
-                            style="display: contents;">
-                            <b-button type="is-primary" rounded icon-pack="fas" icon-left="angle-left"
-                                @click="previousPage" :disabled="previousContinuationTokens.length === 0"
-                                style="margin-left: 2rem;">
-                            </b-button>
-                            <b-button type="is-primary" rounded icon-pack="fas" icon-right="angle-right"
-                                @click="nextPage" :disabled="!nextContinuationToken">
-                            </b-button>
+                            <!-- Paginating Buttons -->
+                            <div class="container"
+                                v-show="nextContinuationToken || previousContinuationTokens.length > 0"
+                                style="display: contents;">
+                                <b-button type="is-primary" rounded icon-pack="fas" icon-left="angle-left"
+                                    @click="previousPage" :disabled="previousContinuationTokens.length === 0"
+                                    style="margin-left: 2rem;">
+                                </b-button>
+                                <b-button type="is-primary" rounded icon-pack="fas" icon-right="angle-right"
+                                    @click="nextPage" :disabled="!nextContinuationToken">
+                                </b-button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Content Table -->
+                <b-table :data="pathContentTableData" :default-sort="config.defaultOrder.split('-')[0]"
+                    :default-sort-direction="config.defaultOrder.split('-')[1]" :mobile-cards="true">
+                    <b-table-column v-slot="props" field="name" label="Name" sortable
+                        :custom-sort="sortTableData('name')" cell-class="name-column">
+                        <div>
+                            <b-icon pack="far" :icon="props.row.type === 'prefix' ? 'folder' : 'file-alt'"
+                                class="name-column-icon" style="text-align: left;">
+                            </b-icon>
 
-            </div>
-
-            <!-- Content Table -->
-            <b-table :data="pathContentTableData" :default-sort="config.defaultOrder.split('-')[0]"
-                :default-sort-direction="config.defaultOrder.split('-')[1]" :mobile-cards="true">
-                <b-table-column v-slot="props" field="name" label="Name" sortable :custom-sort="sortTableData('name')"
-                    cell-class="name-column">
-                    <div style="display: flex; align-items: center;">
-                        <b-icon pack="far" :icon="props.row.type === 'prefix' ? 'folder' : 'file-alt'"
-                            class="name-column-icon">
-                        </b-icon>
-                        <div style="text-align: left;">
                             <b-button type="is-text" rounded tag="a"
                                 :href="props.row.type === 'content' ? props.row.url : `#${props.row.prefix}`"
-                                @click="document.activeElement.blur()" style="text-align: left; white-space: pre-wrap;">
+                                @click="document.activeElement.blur()">
                                 <template>{{ props.row.name }}</template>
                             </b-button>
-                            <br>
-                            <b-button v-if="props.row.installUrl" type="is-primary" rounded outlined tag="a"
-                                :href="props.row.installUrl" class="name-column-install-button">
-                                Install
-                            </b-button>
+
+                            <div class="name-column-buttons">
+                                <!-- Markdown Preview Button -->
+                                <b-button v-if="props.row.type === 'content' && props.row.name.endsWith('.md')"
+                                    type="is-text" tag="a" :href="`#${pathPrefix + props.row.name}::markdown`"
+                                    icon-left="image" size="is-medium" target="_blank"></b-button>
+
+                                <!-- Install Button -->
+                                <b-button v-if="props.row.installUrl" type="is-primary" rounded outlined tag="a"
+                                    :href="props.row.installUrl">Install</b-button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div v-if="cardView && (props.row.size || props.row.dateModified)" class="name-column-details">
-                        <div>{{ formatBytes(props.row.size) }}</div>
+                        <div v-if="cardView && (props.row.size || props.row.dateModified)" class="name-column-details">
+                            <div>{{ formatBytes(props.row.size) }}</div>
 
+                            <b-tooltip :active="!!props.row.dateModified" type="is-light" size="is-small"
+                                position="is-left" animated multilined>
+                                <div>{{ formatDateTime_relative(props.row.dateModified) }}</div>
+                                <template v-slot:content>
+                                    <span>{{ formatDateTime_date(props.row.dateModified) }}</span>
+                                    <br>
+                                    <span>{{ formatDateTime_time(props.row.dateModified) }}</span>
+                                </template>
+                            </b-tooltip>
+
+                        </div>
+                    </b-table-column>
+                    <b-table-column v-slot="props" field="size" numeric label="Size" sortable
+                        :custom-sort="sortTableData('size')" right width="128" cell-class="size-column">
+                        {{ formatBytes(props.row.size) }}
+                    </b-table-column>
+                    <b-table-column v-slot="props" field="dateModified" label="Date Modified" sortable
+                        :custom-sort="sortTableData('dateModified')" centered width="256" cell-class="modified-column">
                         <b-tooltip :active="!!props.row.dateModified" type="is-light" size="is-small" position="is-left"
                             animated multilined>
                             <div>{{ formatDateTime_relative(props.row.dateModified) }}</div>
@@ -138,45 +172,28 @@
                                 <span>{{ formatDateTime_time(props.row.dateModified) }}</span>
                             </template>
                         </b-tooltip>
+                    </b-table-column>
+                </b-table>
 
+                <!-- Paginating Buttons -->
+                <div class="container is-clearfix" style="margin-top: 1rem;">
+                    <div v-show="nextContinuationToken || previousContinuationTokens.length > 0"
+                        class="buttons is-pulled-right">
+                        <b-button type="is-primary" rounded icon-pack="fas" icon-left="angle-left" @click="previousPage"
+                            :disabled="previousContinuationTokens.length === 0">
+                        </b-button>
+                        <b-button type="is-primary" rounded icon-pack="fas" icon-right="angle-right" @click="nextPage"
+                            :disabled="!nextContinuationToken">
+                        </b-button>
                     </div>
-                </b-table-column>
-                <b-table-column v-slot="props" field="size" numeric label="Size" sortable
-                    :custom-sort="sortTableData('size')" centered width="128" cell-class="size-column">
-                    {{ formatBytes(props.row.size) }}
-                </b-table-column>
-                <b-table-column v-slot="props" field="dateModified" label="Date Modified" sortable
-                    :custom-sort="sortTableData('dateModified')" centered width="256" cell-class="modified-column">
-                    <b-tooltip :active="!!props.row.dateModified" type="is-light" size="is-small" position="is-left"
-                        animated multilined>
-                        <div>{{ formatDateTime_relative(props.row.dateModified) }}</div>
-                        <template v-slot:content>
-                            <span>{{ formatDateTime_date(props.row.dateModified) }}</span>
-                            <br>
-                            <span>{{ formatDateTime_time(props.row.dateModified) }}</span>
-                        </template>
-                    </b-tooltip>
-                </b-table-column>
-            </b-table>
-
-            <!-- Paginating Buttons -->
-            <div class="container is-clearfix" style="margin-top: 1rem;">
-                <div v-show="nextContinuationToken || previousContinuationTokens.length > 0"
-                    class="buttons is-pulled-right">
-                    <b-button type="is-primary" rounded icon-pack="fas" icon-left="angle-left" @click="previousPage"
-                        :disabled="previousContinuationTokens.length === 0">
-                    </b-button>
-                    <b-button type="is-primary" rounded icon-pack="fas" icon-right="angle-right" @click="nextPage"
-                        :disabled="!nextContinuationToken">
-                    </b-button>
                 </div>
             </div>
-        </div>
 
-        <!-- Footer -->
-        <div class="footer-bucket-url">
-            <a :href="`${config.bucketUrl}?prefix=${bucketPrefix}`">Bucket: {{ config.bucketUrl }}</a>
-        </div>
+            <!-- Footer -->
+            <div class="footer-bucket-url">
+                <a :href="`${config.bucketUrl}?prefix=${bucketPrefix}`">Bucket: {{ config.bucketUrl }}</a>
+            </div>
+        </template>
     </div>
     <!-- GitHub Corner -->
     <a href="https://github.com/qoomon/aws-s3-bucket-browser" class="github-corner" aria-label="View source on GitHub">
@@ -226,20 +243,25 @@
     </a>
 
     <script>
-        function escapeRegExp(text) {
-            // $& means the whole matched string
-            return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        String.prototype.removePrefix = function (prefix) {
+            if (!this.startsWith(prefix)) return this
+            return this.substring(prefix.length)
         }
 
-        function escapeHTML(text) {
-            let div = document.createElement('div')
-            div.innerText = text
-            return div.innerHTML
+        String.prototype.escapeHTML = function () {
+            const template = document.createElement('span')
+            template.innerText = this
+            return template.innerHTML
         }
 
         function devicePlatform_iOS() {
             return /iPad|iPhone|iPod/.test(navigator.platform) ||
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+        }
+
+        function encodePath(path) {
+            const replaceChars = { ";": "%3B", "?": "%3F", ":": "%3A", "@": "%40", "&": "%26", "=": "%3D", "+": "%2B", "$": "%24", ",": "%2C", "#": "%23" }
+            return encodeURI(path).split("").map(char => replaceChars[char] || char).join("");
         }
     </script>
 
@@ -247,6 +269,16 @@
     <!-- Main Script -->
 
     <script>
+        const htmlPrefix = 'HTML>'
+        if (config.title) {
+            if (config.title.startsWith(htmlPrefix)) config.titleHTML = config.title.removePrefix(htmlPrefix)
+            else config.titleHTML = config.title.escapeHTML()
+        }
+        if (config.subtitle) {
+            if (config.subtitle.startsWith(htmlPrefix)) config.subtitleHTML = config.subtitle.removePrefix(htmlPrefix)
+            else config.subtitleHTML = config.subtitle.escapeHTML()
+        }
+
         if (!config.bucketUrl) {
             // try get bucket url by request parameter
             config.bucketUrl = new URL(window.location).searchParams.get('bucket')
@@ -262,27 +294,33 @@
         if (!match) {
             type = 'AWS'
             // check for urls like https://s3.eu-central-1.amazonaws.com/example-bucket/index.html
-            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/s3\.(?<region>[^.]+)\.amazonaws.com\/(?<name>[^/]+)/)
+            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/s3\.(?<region>[^.]+)\.amazonaws.com\/(?<name>[^/]+)(\/(?<prefix>[^?]+))?/)
         }
         if (!match) {
             type = 'AWS'
             // check for urls like http://example-bucket.s3-website-eu-west-1.amazonaws.com/index.html
-            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>[^.]+)\.s3-website-(?<region>[^.]+)\.amazonaws\.com/)
+            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>.+)\.s3-website-(?<region>[^.]+)\.amazonaws\.com(\/(?<prefix>[^?]+))?/)
         }
         if (!match) {
             type = 'AWS'
             // check for urls like http://example-bucket.s3-website.eu-central-1.amazonaws.com/index.html
-            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>[^.]+)\.s3-website\.(?<region>[^.]+)\.amazonaws\.com/)
+            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>.+)\.s3-website\.(?<region>[^.]+)\.amazonaws\.com(\/(?<prefix>[^?]+))?/)
         }
         if (!match) {
             type = 'GCP'
             // check for urls like https://storage.googleapis.com/example-bucket/index.html
-            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/storage\.googleapis\.com\/(?<name>[^.]+)/)
+            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/storage\.googleapis\.com\/(?<name>[^/]+)(\/(?<prefix>[^?]+))?/)
+        }
+        if (!match) {
+            type = 'DGO'
+            // check for urls like https://example-bucket.nyc3.digitaloceanspaces.com/index.html
+            // check for urls like https://example-bucket.nyc3.cdn.digitaloceanspaces.com/index.html
+            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>.+)\.(?<region>[^.]+)\.(?<domain>(cdn\.)?digitaloceanspaces\.com)(\/(?<prefix>[^?]+))?/)
         }
         if (!match) {
             type = 'IBM'
             // check for urls like http://example-bucket.s3-web.us-south.cloud-object-storage.appdomain.cloud/index.html
-            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>[^.]+)\.s3-web\.(?<region>[^.]+)\.cloud-object-storage\.appdomain\.cloud/)
+            match = config.bucketUrl.match(/(?<protocol>[^:]+):\/\/(?<name>.+)\.s3-web\.(?<region>[^.]+)\.cloud-object-storage\.appdomain\.cloud(\/(?<prefix>[^?]+))?/)
         }
 
         if (match) {
@@ -293,12 +331,15 @@
                 case 'GCP':
                     config.bucketUrl = `${match.groups.protocol}://storage.googleapis.com/${match.groups.name}`
                     break;
+                case 'DGO':
+                    config.bucketUrl = `${match.groups.protocol}://${match.groups.name}.${match.groups.region}.${match.groups.domain}`
+                    break;
                 case 'IBM':
                     config.bucketUrl = `${match.groups.protocol}://${match.groups.name}.s3.${match.groups.region}.cloud-object-storage.appdomain.cloud/`
                     break;
             }
+            if (config.rootPrefix === undefined) config.rootPrefix = match.groups.prefix
         }
-
         console.log("Bucket REST API: " + config.bucketUrl)
 
         config.rootPrefix = config.rootPrefix || ''
@@ -360,6 +401,9 @@
             },
             methods: {
                 moment,
+                urlFromPathPrefix(pathPrefix) {
+                    return `${(this.config.bucketMaskUrl || this.config.bucketUrl).replace(/\/*$/, '')}/${encodePath(pathPrefix)}`
+                },
                 validBucketPrefix(prefix) {
                     if (prefix === '') return true
                     if (prefix.startsWith(' ') || prefix.endsWith(' ')) return false
@@ -401,7 +445,7 @@
                             bucketListApiUrl += `&max-keys=${config.pageSize}`
                         }
                         if (this.continuationToken) {
-                            bucketListApiUrl += `&continuation-token=${encodeURIComponent(this.continuationToken)}`
+                            bucketListApiUrl += `&continuation-token=${encodePath(this.continuationToken)}`
                         }
                         let listBucketResultResponse = await fetch(bucketListApiUrl)
                         let listBucketResultXml = await listBucketResultResponse.text()
@@ -412,7 +456,7 @@
                         }
                     } catch (error) {
                         this.$buefy.notification.open({
-                            message: escapeHTML(error.message),
+                            message: error.message?.escapeHTML(),
                             type: 'is-danger',
                             duration: 60000,
                             position: 'is-bottom'
@@ -425,10 +469,9 @@
 
                     let commonPrefixes = [...listBucketResult.querySelectorAll("ListBucketResult > CommonPrefixes")]
                         .map(tag => ({
-                            prefix: tag.querySelector('Prefix').textContent
-                                .replace(RegExp(`^${escapeRegExp(config.rootPrefix)}`), '')
+                            prefix: tag.querySelector('Prefix').textContent.removePrefix(config.rootPrefix)
                         }))
-                        .filter(prefix => !config.keyExcludePatterns.find(pattern => pattern.test(prefix.prefix)))
+                        .filter(prefix => !config.keyExcludePatterns.find(pattern => pattern.test(prefix.prefix.removePrefix(config.rootPrefix))))
                         .map(prefix => ({
                             type: 'prefix',
                             name: prefix.prefix.split('/').slice(-2)[0] + '/',
@@ -442,7 +485,7 @@
                             dateModified: new Date(tag.querySelector('LastModified').textContent)
                         }))
                         .filter(content => content.key !== decodeURI(this.bucketPrefix))
-                        .filter(content => !config.keyExcludePatterns.find(pattern => pattern.test(content.key)))
+                        .filter(content => !config.keyExcludePatterns.find(pattern => pattern.test(content.key.removePrefix(config.rootPrefix))))
                         .map(content => {
                             if (content.key.endsWith('/') && !content.size) {
                                 return {
@@ -452,11 +495,11 @@
                                 }
                             }
 
-                            let url = `${(config.bucketMaskUrl || config.bucketUrl).replace(/\/*$/, '')}/${encodeURIComponent(content.key)}`
+                            let url = `${(config.bucketMaskUrl || config.bucketUrl).replace(/\/*$/, '')}/${encodePath(content.key)}`
                             let installUrl = undefined
                             if (url.endsWith('/manifest.plist') && devicePlatform_iOS()) {
                                 // generate manifest.plist install urls
-                                installUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(url)}`
+                                installUrl = `itms-services://?action=download-manifest&url=${encodePath(url)}`
                             }
                             return {
                                 type: 'content',
@@ -550,6 +593,14 @@
             overflow-y: auto;
         }
 
+        a {
+            color: var(--primary-color);
+        }
+
+        .table {
+            table-layout: fixed;
+        }
+
         .buttons .field {
             margin-bottom: 0.5rem;
         }
@@ -565,14 +616,21 @@
         }
 
         .button.is-text {
-            padding: 0 !important;
-            height: auto !important;
-            text-decoration: none !important;
-            box-shadow: none !important;
-            background-color: unset !important;
-            user-select: text !important;
-            color: var(--primary-color) !important;
+            padding: 0;
+            height: auto;
+            text-decoration: none;
+            box-shadow: none;
+            background-color: unset;
+            user-select: text;
+            color: var(--primary-color);
             font-weight: 500;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .button.is-text>span {
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .search-prefix-matches-path-prefix input.input {
@@ -594,21 +652,28 @@
             border-color: var(--primary-color) !important;
         }
 
+        .name-column>div:first-child {
+            display: flex;
+            align-items: center;
+        }
+
         .name-column-icon {
             display: block;
-            text-align: left;
             flex-basis: 1.5rem;
             flex-grow: 0;
             flex-shrink: 0;
-            "
-
         }
 
-        .name-column-install-button {
-            height: 0;
-            padding: 0.6rem;
-            margin-top: 0.4rem;
-            font-size: 0.8rem;
+        .name-column-buttons {
+            display: flex;
+            margin-left: auto;
+        }
+
+        .name-column-buttons>.button {
+            height: 1em;
+            height: auto;
+            padding: 0em 0.6em;
+            margin-left: 0.5em;
         }
 
         .name-column-details {
@@ -640,6 +705,10 @@
         @media screen and (max-width: 768px) {
             .name-column::before {
                 display: none !important;
+            }
+
+            .name-column>div:first-child {
+                max-width: calc(100% - 5.5rem);
             }
 
             .size-column,
