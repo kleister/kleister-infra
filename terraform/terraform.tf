@@ -8,7 +8,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.52.0"
+      version = "~> 5.1.0"
     }
     aws = {
       source  = "hashicorp/aws"
@@ -24,6 +24,9 @@ provider "aws" {
 }
 
 resource "cloudflare_zone" "kleister" {
-  account_id = var.cloudflare_account
-  zone       = "kleister.eu"
+  name = "kleister.eu"
+
+  account = {
+    id = var.cloudflare_account
+  }
 }

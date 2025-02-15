@@ -1,15 +1,17 @@
-resource "cloudflare_record" "root" {
+resource "cloudflare_dns_record" "root" {
   zone_id = cloudflare_zone.kleister.id
   name    = "@"
-  value   = "kleister-docs.netlify.com"
+  content = "kleister-docs.netlify.com"
   type    = "CNAME"
   proxied = false
+  ttl     = 1
 }
 
-resource "cloudflare_record" "www" {
+resource "cloudflare_dns_record" "www" {
   zone_id = cloudflare_zone.kleister.id
   name    = "www"
-  value   = "kleister-docs.netlify.com"
+  content = "kleister-docs.netlify.com"
   type    = "CNAME"
   proxied = false
+  ttl     = 1
 }
