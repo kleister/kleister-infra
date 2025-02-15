@@ -22,6 +22,8 @@ jobs:
       - name: Setup terraform
         id: terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
 
       - name: Terraform format
         id: fmt
@@ -44,7 +46,6 @@ jobs:
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: bin/terraform validate -no-color
-        continue-on-error: true
 
       - name: Terraform plan
         id: plan
@@ -54,12 +55,6 @@ jobs:
           AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: bin/terraform plan -no-color -input=false
-        continue-on-error: true
-
-      - name: Terraform status
-        id: status
-        if: steps.validate.outcome == 'failure' || steps.plan.outcome == 'failure'
-        run: exit 1
 
       - name: Terraform apply
         id: apply
