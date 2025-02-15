@@ -24,6 +24,9 @@ provider "aws" {
 }
 
 resource "cloudflare_zone" "kleister" {
-  account_id = var.cloudflare_account
-  zone       = "kleister.eu"
+  name = "kleister.eu"
+
+  account = {
+    id = var.cloudflare_account
+  }
 }
