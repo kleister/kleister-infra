@@ -1,7 +1,7 @@
 ---
 repository:
   name: kleister-infra
-  description: "Kleister: Infra"
+  description: Infra for the Kleister project
   homepage: https://kleister.eu
   topics: kleister, minecraft, infra, infrastructure, terraform, provisioning
 
