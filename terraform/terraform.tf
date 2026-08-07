@@ -22,11 +22,3 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
-
-resource "cloudflare_zone" "kleister" {
-  name = "kleister.eu"
-
-  account = {
-    id = var.cloudflare_account
-  }
-}
