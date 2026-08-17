@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/kleister/kleister-infra/compare/v1.0.0...v1.1.0) (2026-08-17)
+
+### Dependencies
+
+* **minor:** update terraform aws to ~> 6.59.0 ([#468](https://github.com/kleister/kleister-infra/issues/468)) ([5979e10](https://github.com/kleister/kleister-infra/commit/5979e10fa0882143b994c3289e66510964fd22f2))
+* **minor:** update terraform aws to ~> 6.60.0 ([#469](https://github.com/kleister/kleister-infra/issues/469)) ([ebacbf4](https://github.com/kleister/kleister-infra/commit/ebacbf4e3b893c47ffa3ce26f1ce33f4266adf9e))
+* **patch:** update dependency pre-commit to v4.6.2 ([#467](https://github.com/kleister/kleister-infra/issues/467)) ([f02af30](https://github.com/kleister/kleister-infra/commit/f02af30cac611170a539550aefdd2648b9d022db))
+
 ## 1.0.0 (2026-08-10)
 
 ### Features
