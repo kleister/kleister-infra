@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/kleister/kleister-infra/compare/v1.8.0...v1.9.0) (2026-10-12)
+
+### Dependencies
+
+* **minor:** update terraform aws to ~> 6.68.0 ([#492](https://github.com/kleister/kleister-infra/issues/492)) ([4e0d9d4](https://github.com/kleister/kleister-infra/commit/4e0d9d44cfa91d4bfd520b0cc309f865f9807d6f))
+* **minor:** update terraform cloudflare to ~> 5.27.0 ([#491](https://github.com/kleister/kleister-infra/issues/491)) ([6581b66](https://github.com/kleister/kleister-infra/commit/6581b6654dc2c84116236d60526de7acf077df37))
+
 ## [1.8.0](https://github.com/kleister/kleister-infra/compare/v1.7.0...v1.8.0) (2026-10-05)
 
 ### Dependencies
